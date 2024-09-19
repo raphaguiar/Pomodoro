@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pomotimer</title>
+    <link rel="icon" href="../imagens/favicon.png" type="image/x-icon">
+    <link href="https://fonts.googleapis.com/css2?family=Hammersmith+One&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">   
+</head>
+<body>
+    <div class="container">
+
+<!---lado esquerdo-->      
+<div class="left">
+    <h1 class="title">Pomotimer</h1>
+    <p>Otimize seu tempo de estudos com o método pomodoro</p>
+        <div class="timer-container">
+            <p id="timer">25:00</p>
+        </div>
+    <button id="startPauseButton">Pomodoro</button>
+    <button id="breakButton">Break</button>
+    <button id="pauseButton">Pausar</button>
+</div>  
+
+<!---lado direito-->      
+<div class="right">
+    <img src="../imagens/moon.png" id="icon" class="tema" alt="Tema">
+    <div class="header">
+        <p a href="">Log In</p>
+        <p>Sign Up</p>
+    </div>
+    <h1 class="tasks">Tarefas</h1>
+    <p>Tenha controle sobre o que estudar</p>
+    <input type="text" id="tarefa" id="myInput" placeholder="Adicionar nova tarefa">
+    <button class="addtask" id="bybtn" onclick="adicionarTarefa()">+ Adicionar tarefa</button>
+    <ul id="listaTarefas"></ul>
+
+</div>
+</div>    
+<script src="js.js" defer></script>
+</body>
+
+</html>
