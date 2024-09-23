@@ -86,3 +86,82 @@ const resumeTimer = () => {
 document.getElementById('startPauseButton').addEventListener('click', startPomodoro);
 document.getElementById('breakButton').addEventListener('click', startBreak);
 document.getElementById('pauseButton').addEventListener('click', togglePauseResume);
+
+// lista de tarefas
+let tarefas = [];
+
+// carregando as tarefas do localstorage quando a página é carregada
+window.onload = () => {
+    const savedTasks = localStorage.getItem('tarefas');
+    tarefas = savedTasks ? JSON.parse(savedTasks) : [];
+    atualizarLista();
+};
+
+function adicionarTarefa() {
+    const input = document.getElementById('tarefa');
+    const novaTarefa = input.value.trim();
+
+    if (novaTarefa) {
+        tarefas.push(novaTarefa);
+        input.value = '';
+        atualizarLista();
+        localStorage.setItem('tarefas', JSON.stringify(tarefas)); // salvando as tarefas no localstorage
+    }
+}
+
+function atualizarLista() {
+    const lista = document.getElementById('listaTarefas');
+    lista.innerHTML = '';
+
+    tarefas.forEach((tarefa, index) => {
+    const item = document.createElement('li');
+    item.textContent = tarefa;
+
+    const deleteBtn = document.createElement('button');
+    deleteBtn.textContent = '✔'; 
+    deleteBtn.classList.add('delete-btn');
+    deleteBtn.onclick = () => excluirTarefa(index, item);
+
+    item.appendChild(deleteBtn);
+    lista.appendChild(item);
+    });
+}
+
+function excluirTarefa(index, item) { //removendo os itens da lista de tarefas
+    item.classList.add('remover'); 
+        setTimeout(() => {
+        tarefas.splice(index, 1);
+        atualizarLista();
+        localStorage.setItem('tarefas', JSON.stringify(tarefas)); // atualizando as tarefas no localstorage
+    }, 500); 
+}
+
+// troca de temas
+const themeToggle = document.getElementById('themeToggle');
+const themeStylesheet = document.getElementById('themeStylesheet');
+
+let isDarkTheme = localStorage.getItem('theme') === 'dark'; // verificando o tema ativo na página
+
+// carregando o tema inicial
+if (isDarkTheme) {
+    themeStylesheet.setAttribute('href', 'dark-theme.css');
+    themeToggle.src = '../imagens/sun.png'; 
+} else {
+    themeStylesheet.setAttribute('href', 'light-theme.css');
+    themeToggle.src = '../imagens/moon.png';
+}
+
+// salvando o tema pra que quando o usuário der refresh na página o tema não volte pro defaultl
+themeToggle.addEventListener('click', () => {
+    isDarkTheme = !isDarkTheme;
+
+    if (isDarkTheme) {
+        themeStylesheet.setAttribute('href', 'dark-theme.css');
+        themeToggle.src = '../imagens/sun.png';
+        localStorage.setItem('theme', 'dark'); // salvando no localstorage
+    } else {
+        themeStylesheet.setAttribute('href', 'light-theme.css');
+        themeToggle.src = '../imagens/moon.png';
+        localStorage.setItem('theme', 'light'); // salvando no localstorage
+    }
+});
