@@ -1,0 +1,88 @@
+// cronômetro
+let timer;
+let isRunning = false;
+let remainingTime = 25 * 60; 
+const timerDisplay = document.getElementById('timer');
+
+//Inicia o cronometro
+const startTimer = () => {
+    timerDisplay.textContent = formatTime(remainingTime);
+
+    timer = setInterval(() => {
+        if (remainingTime <= 0) {
+            clearInterval(timer);
+            return;
+        }
+        remainingTime--;
+        timerDisplay.textContent = formatTime(remainingTime);
+    }, 1000);
+};
+
+// formato do cronômetro (minutos:segundos)
+const formatTime = (time) => {
+    const minutes = Math.floor(time / 60);
+    const seconds = time % 60;
+    return `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+};
+
+// botões 
+const startPomodoro = () => {
+    if (!isRunning) {
+        clearInterval(timer);
+        remainingTime = 25 * 60;
+        startTimer();
+        toggleButtons('pause');
+        isRunning = true;
+    }
+};
+
+const startBreak = () => {
+    if (!isRunning) {
+        clearInterval(timer);
+        remainingTime = 5 * 60; 
+        startTimer();
+        toggleButtons('pause');
+        isRunning = true;
+    }
+};
+
+const toggleButtons = (action) => {
+    const startPauseButton = document.getElementById('startPauseButton');
+    const breakButton = document.getElementById('breakButton');
+    const pauseButton = document.getElementById('pauseButton');
+
+    if (action === 'pause') {
+        startPauseButton.classList.add('hidden');
+        breakButton.classList.add('hidden');
+        pauseButton.classList.remove('hidden');
+        pauseButton.textContent = 'Pausar';
+    } else {
+        startPauseButton.classList.remove('hidden');
+        breakButton.classList.remove('hidden');
+        pauseButton.classList.add('hidden');
+    }
+};
+
+const togglePauseResume = () => {
+    if (isRunning) {
+        pauseTimer();
+    } else {
+        resumeTimer();
+    }
+};
+
+const pauseTimer = () => {
+    clearInterval(timer);
+    isRunning = false;
+    document.getElementById('pauseButton').textContent = 'Continuar'; 
+};
+
+const resumeTimer = () => {
+    startTimer();
+    isRunning = true;
+    document.getElementById('pauseButton').textContent = 'Pausar'; 
+};
+
+document.getElementById('startPauseButton').addEventListener('click', startPomodoro);
+document.getElementById('breakButton').addEventListener('click', startBreak);
+document.getElementById('pauseButton').addEventListener('click', togglePauseResume);
