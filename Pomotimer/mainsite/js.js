@@ -1,31 +1,34 @@
-// cronômetro
+//cronômetro, variáveis declaradas
 let timer;
 let isRunning = false;
 let remainingTime = 25 * 60; 
 const timerDisplay = document.getElementById('timer');
 
-//Inicia o cronometro
+//Inicia o cronômetro, formata o tempo restante e atualiza a exibição a cada segundo
 const startTimer = () => {
-    timerDisplay.textContent = formatTime(remainingTime);
+    timerDisplay.textContent = formatTime(remainingTime); //Formata o tempo restante em minutos e segundos e atualiza.
 
     timer = setInterval(() => {
         if (remainingTime <= 0) {
             clearInterval(timer);
             return;
         }
-        remainingTime--;
-        timerDisplay.textContent = formatTime(remainingTime);
+        remainingTime--;//Tempo restante do cron em segundos
+        timerDisplay.textContent = formatTime(remainingTime);//Atualiza o tempo restante format em seg e min.
     }, 1000);
 };
 
-// formato do cronômetro (minutos:segundos)
+//formato do cronômetro (minutos:segundos)
+//Converter um valor em segundos para uma string formatada
 const formatTime = (time) => {
     const minutes = Math.floor(time / 60);
     const seconds = time % 60;
     return `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
 };
 
-// botões 
+//botões
+//Inicia o cronômetro Pomodoro configurando o tempo para 25 minutos, limpando intervalos anteriores, 
+//e atualizando o estado dos botões, se o cronômetro não estiver em execução.
 const startPomodoro = () => {
     if (!isRunning) {
         clearInterval(timer);
@@ -36,6 +39,8 @@ const startPomodoro = () => {
     }
 };
 
+//Inicia o cronômetro de intervalo configurando o tempo para 5 minutos, limpando intervalos anteriores,
+//e atualizando o estado dos botões, se o cronômetro não estiver em execução.
 const startBreak = () => {
     if (!isRunning) {
         clearInterval(timer);
@@ -46,6 +51,9 @@ const startBreak = () => {
     }
 };
 
+
+//Alterna a visibilidade dos botões de controle com base na ação especificada 
+//('pause' oculta os botões de iniciar/pausar e mostra o botão de pausar).
 const toggleButtons = (action) => {
     const startPauseButton = document.getElementById('startPauseButton');
     const breakButton = document.getElementById('breakButton');
@@ -63,6 +71,7 @@ const toggleButtons = (action) => {
     }
 };
 
+//Alterna entre pausar e retomar o cronômetro com base no estado atual (isRunning).
 const togglePauseResume = () => {
     if (isRunning) {
         pauseTimer();
@@ -71,26 +80,30 @@ const togglePauseResume = () => {
     }
 };
 
+//Pausa o cronômetro, limpa o intervalo ativo e atualiza o texto do botão de pausa para "Continuar".
 const pauseTimer = () => {
     clearInterval(timer);
     isRunning = false;
     document.getElementById('pauseButton').textContent = 'Continuar'; 
 };
 
+//Retoma o cronômetro chamando a função startTimer, define isRunning como verdadeiro
+//e atualiza o texto do botão de pausa para "Pausar".
 const resumeTimer = () => {
     startTimer();
     isRunning = true;
     document.getElementById('pauseButton').textContent = 'Pausar'; 
 };
 
+//Adiciona eventos de clique aos botões para controlar o cronômetro Pomodoro e pausá-lo.
 document.getElementById('startPauseButton').addEventListener('click', startPomodoro);
 document.getElementById('breakButton').addEventListener('click', startBreak);
 document.getElementById('pauseButton').addEventListener('click', togglePauseResume);
 
-// lista de tarefas
+//lista de tarefas
 let tarefas = [];
 
-// carregando as tarefas do localstorage quando a página é carregada
+//carregando as tarefas do localstorage quando a página é carregada
 window.onload = () => {
     const savedTasks = localStorage.getItem('tarefas');
     tarefas = savedTasks ? JSON.parse(savedTasks) : [];
@@ -132,17 +145,17 @@ function excluirTarefa(index, item) { //removendo os itens da lista de tarefas
         setTimeout(() => {
         tarefas.splice(index, 1);
         atualizarLista();
-        localStorage.setItem('tarefas', JSON.stringify(tarefas)); // atualizando as tarefas no localstorage
+        localStorage.setItem('tarefas', JSON.stringify(tarefas)); //atualizando as tarefas no localstorage
     }, 500); 
 }
 
-// troca de temas
+//troca de temas
 const themeToggle = document.getElementById('themeToggle');
 const themeStylesheet = document.getElementById('themeStylesheet');
 
-let isDarkTheme = localStorage.getItem('theme') === 'dark'; // verificando o tema ativo na página
+let isDarkTheme = localStorage.getItem('theme') === 'dark'; //verificando o tema ativo na página
 
-// carregando o tema inicial
+//carregando o tema inicial
 if (isDarkTheme) {
     themeStylesheet.setAttribute('href', 'dark-theme.css');
     themeToggle.src = '../imagens/sun.png'; 
@@ -151,17 +164,17 @@ if (isDarkTheme) {
     themeToggle.src = '../imagens/moon.png';
 }
 
-// salvando o tema pra que quando o usuário der refresh na página o tema não volte pro defaultl
+//salvando o tema pra que quando o usuário der refresh na página o tema não volte pro defaultl
 themeToggle.addEventListener('click', () => {
     isDarkTheme = !isDarkTheme;
 
     if (isDarkTheme) {
         themeStylesheet.setAttribute('href', 'dark-theme.css');
         themeToggle.src = '../imagens/sun.png';
-        localStorage.setItem('theme', 'dark'); // salvando no localstorage
+        localStorage.setItem('theme', 'dark'); //salvando no localstorage
     } else {
         themeStylesheet.setAttribute('href', 'light-theme.css');
         themeToggle.src = '../imagens/moon.png';
-        localStorage.setItem('theme', 'light'); // salvando no localstorage
+        localStorage.setItem('theme', 'light'); //salvando no localstorage
     }
 });
