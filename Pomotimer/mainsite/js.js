@@ -4,22 +4,22 @@ let isRunning = false;
 let remainingTime = 25 * 60; 
 const timerDisplay = document.getElementById('timer');
 
-//Inicia o cronômetro, formata o tempo restante e atualiza a exibição a cada segundo
+//inicia o cronômetro, formata o tempo restante e atualiza a exibição a cada segundo
 const startTimer = () => {
-    timerDisplay.textContent = formatTime(remainingTime); //Formata o tempo restante em minutos e segundos e atualiza.
+    timerDisplay.textContent = formatTime(remainingTime); //formata o tempo restante em minutos e segundos e atualiza
 
     timer = setInterval(() => {
         if (remainingTime <= 0) {
             clearInterval(timer);
             return;
         }
-        remainingTime--;//Tempo restante do cron em segundos
-        timerDisplay.textContent = formatTime(remainingTime);//Atualiza o tempo restante format em seg e min.
+        remainingTime--;//tempo restante do cron em segundos
+        timerDisplay.textContent = formatTime(remainingTime);//atualiza o tempo restante format em seg e min
     }, 1000);
 };
 
 //formato do cronômetro (minutos:segundos)
-//Converter um valor em segundos para uma string formatada
+//converter um valor em segundos para uma string formatada
 const formatTime = (time) => {
     const minutes = Math.floor(time / 60);
     const seconds = time % 60;
@@ -27,8 +27,8 @@ const formatTime = (time) => {
 };
 
 //botões
-//Inicia o cronômetro Pomodoro configurando o tempo para 25 minutos, limpando intervalos anteriores, 
-//e atualizando o estado dos botões, se o cronômetro não estiver em execução.
+//inicia o cronômetro pomodoro configurando o tempo para 25 minutos, limpando intervalos anteriores, 
+//e atualizando o estado dos botões, se o cronômetro não estiver em execução
 const startPomodoro = () => {
     if (!isRunning) {
         clearInterval(timer);
@@ -39,8 +39,8 @@ const startPomodoro = () => {
     }
 };
 
-//Inicia o cronômetro de intervalo configurando o tempo para 5 minutos, limpando intervalos anteriores,
-//e atualizando o estado dos botões, se o cronômetro não estiver em execução.
+//inicia o cronômetro de intervalo configurando o tempo para 5 minutos, limpando intervalos anteriores,
+//e atualizando o estado dos botões, se o cronômetro não estiver em execução
 const startBreak = () => {
     if (!isRunning) {
         clearInterval(timer);
@@ -52,7 +52,7 @@ const startBreak = () => {
 };
 
 
-//Alterna a visibilidade dos botões de controle com base na ação especificada 
+//alterna a visibilidade dos botões de controle com base na ação especificada 
 //('pause' oculta os botões de iniciar/pausar e mostra o botão de pausar).
 const toggleButtons = (action) => {
     const startPauseButton = document.getElementById('startPauseButton');
@@ -71,7 +71,7 @@ const toggleButtons = (action) => {
     }
 };
 
-//Alterna entre pausar e retomar o cronômetro com base no estado atual (isRunning).
+//alterna entre pausar e retomar o cronômetro com base no estado atual (isRunning).
 const togglePauseResume = () => {
     if (isRunning) {
         pauseTimer();
@@ -80,22 +80,22 @@ const togglePauseResume = () => {
     }
 };
 
-//Pausa o cronômetro, limpa o intervalo ativo e atualiza o texto do botão de pausa para "Continuar".
+//pausa o cronômetro, limpa o intervalo ativo e atualiza o texto do botão de pausa para "Continuar"
 const pauseTimer = () => {
     clearInterval(timer);
     isRunning = false;
     document.getElementById('pauseButton').textContent = 'Continuar'; 
 };
 
-//Retoma o cronômetro chamando a função startTimer, define isRunning como verdadeiro
-//e atualiza o texto do botão de pausa para "Pausar".
+//retoma o cronômetro chamando a função startTimer, define isRunning como verdadeiro
+//e atualiza o texto do botão de pausa para "Pausar"
 const resumeTimer = () => {
     startTimer();
     isRunning = true;
     document.getElementById('pauseButton').textContent = 'Pausar'; 
 };
 
-//Adiciona eventos de clique aos botões para controlar o cronômetro Pomodoro e pausá-lo.
+//adiciona eventos de clique aos botões para controlar o cronômetro pomodoro e pausá-lo
 document.getElementById('startPauseButton').addEventListener('click', startPomodoro);
 document.getElementById('breakButton').addEventListener('click', startBreak);
 document.getElementById('pauseButton').addEventListener('click', togglePauseResume);
